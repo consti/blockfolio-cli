@@ -1,0 +1,26 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+require 'json'
+require 'net/http'
+
+ID = ENV['BLOCKFOLIO_ID']
+raise 'Please set your BLOCKFOLIO_ID environment variable' if ID.nil?
+
+LOCALE   = ENV['BLOCKFOLIO_LOCALE'] || 'en-US'
+CURRENCY = ENV['BLOCKFOLIO_CURRENCY'] || 'USD'
+
+API_URL = 'http://blockfoliorest-pxrpmzggzv.elasticbeanstalk.com/rest/'\
+          'get_all_positions/%s?fiat_currency=%s&locale=%s'.freeze
+
+def comma_separator(number)
+  number.round.to_s.reverse.gsub(/([0-9]{3}(?=([0-9])))/, '\1,').reverse
+end
+
+url = URI.parse(format(API_URL, ID, CURRENCY, LOCALE))
+response = Net::HTTP.get(url)
+json     = JSON.parse(response)
+
+fiat = json['portfolio']['fiatValue']
+fiat_change = json['portfolio']['percentChangeFiat']
+puts "#{comma_separator(fiat)} #{CURRENCY} (#{fiat_change})"
