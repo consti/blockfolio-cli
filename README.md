@@ -6,6 +6,12 @@ Unofficial Blockfolio CLI that shows your current portfolio value.
 
 Download `blockfolio` and put it in a folder that's in your `PATH` env var, e.g. `/usr/local/bin`.
 
+Easiest way is to set a symoblic link like this:
+
+```
+ln -s $PWD/blockfolio /usr/local/bin/blockfolio
+```
+
 Make sure it's executable - `chmod 755 blockfolio`.
 
 Get your Device ID from the Blockfolio app. Go to Settings, tap "Copy Device ID".
